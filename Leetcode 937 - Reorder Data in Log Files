@@ -34,29 +34,29 @@ class Solution {
         
         Arrays.sort(logs, (log1, log2) -> {
             // Split both logs into 2 parts to differentiate alphanumeric with alphabets only
-        // or digits only part
-        String[] log1Parts = log1.split(" ", 2);
-        String[] log2Parts = log2.split(" ", 2);
+            // or digits only part
+            String[] log1Parts = log1.split(" ", 2);
+            String[] log2Parts = log2.split(" ", 2);
         
-        // Check if 2nd part is digit or alphabet
-        boolean log1HasDigits = Character.isDigit(log1Parts[1].charAt(0));
-        boolean log2HasDigits = Character.isDigit(log2Parts[1].charAt(0));
+            // Check if 2nd part is digit or alphabet
+            boolean log1HasDigits = Character.isDigit(log1Parts[1].charAt(0));
+            boolean log2HasDigits = Character.isDigit(log2Parts[1].charAt(0));
         
-        // if 2nd halves are not digits then compare alphabets part and 
-        // if 2nd part alphabets are same then compare with first alphanumeric part
-        if(!log1HasDigits && !log2HasDigits) {
-            int compResult = log1Parts[1].compareTo(log2Parts[1]);
-            // Now check if 2nd halves are equal and if they are then compare 1st halves
-            if(compResult == 0){
-                return log1Parts[0].compareTo(log2Parts[0]);
+            // if 2nd halves are not digits then compare alphabets part and 
+            // if 2nd part alphabets are same then compare with first alphanumeric part
+            if(!log1HasDigits && !log2HasDigits) {
+                int compResult = log1Parts[1].compareTo(log2Parts[1]);
+                // Now check if 2nd halves are equal and if they are then compare 1st halves
+                if(compResult == 0){
+                    return log1Parts[0].compareTo(log2Parts[0]);
+                }
+                return compResult;
             }
-            return compResult;
-        }
         
-        // Now either both have digits or one of them have digits
-        // If both have digits, dont change order.
-        // If one of them have digits then keep digit one after alphabetic one.
-        return log1HasDigits ? (log2HasDigits ? 0 : 1) : -1;
+            // Now either both have digits or one of them have digits
+            // If both have digits, dont change order.
+            // If one of them have digits then keep digit one after alphabetic one.
+            return log1HasDigits ? (log2HasDigits ? 0 : 1) : -1;
         });
         
         return logs;
