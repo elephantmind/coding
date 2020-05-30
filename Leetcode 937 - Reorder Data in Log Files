@@ -1,0 +1,109 @@
+/**
+Leetcode 937 - Reorder Data in Log Files
+
+You have an array of logs.  Each log is a space delimited string of words.
+
+For each log, the first word in each log is an alphanumeric identifier.  Then, either:
+
+Each word after the identifier will consist only of lowercase letters, or;
+Each word after the identifier will consist only of digits.
+We will call these two varieties of logs letter-logs and digit-logs.  It is guaranteed that each log has at least one word after its identifier.
+
+Reorder the logs so that all of the letter-logs come before any digit-log.  The letter-logs are ordered lexicographically ignoring identifier, with the identifier used in case of ties.  The digit-logs should be put in their original order.
+
+Return the final order of the logs.
+
+
+Example 1:
+
+Input: logs = ["dig1 8 1 5 1","let1 art can","dig2 3 6","let2 own kit dig","let3 art zero"]
+Output: ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 3 6"]
+ 
+
+Constraints:
+
+0 <= logs.length <= 100
+3 <= logs[i].length <= 100
+logs[i] is guaranteed to have an identifier, and a word after the identifier.
+
+**/
+
+// with lambda
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        
+        Arrays.sort(logs, (log1, log2) -> {
+            // Split both logs into 2 parts to differentiate alphanumeric with alphabets only
+        // or digits only part
+        String[] log1Parts = log1.split(" ", 2);
+        String[] log2Parts = log2.split(" ", 2);
+        
+        // Check if 2nd part is digit or alphabet
+        boolean log1HasDigits = Character.isDigit(log1Parts[1].charAt(0));
+        boolean log2HasDigits = Character.isDigit(log2Parts[1].charAt(0));
+        
+        // if 2nd halves are not digits then compare alphabets part and 
+        // if 2nd part alphabets are same then compare with first alphanumeric part
+        if(!log1HasDigits && !log2HasDigits) {
+            int compResult = log1Parts[1].compareTo(log2Parts[1]);
+            // Now check if 2nd halves are equal and if they are then compare 1st halves
+            if(compResult == 0){
+                return log1Parts[0].compareTo(log2Parts[0]);
+            }
+            return compResult;
+        }
+        
+        // Now either both have digits or one of them have digits
+        // If both have digits, dont change order.
+        // If one of them have digits then keep digit one after alphabetic one.
+        return log1HasDigits ? (log2HasDigits ? 0 : 1) : -1;
+        });
+        
+        return logs;
+    }
+}
+
+/*
+// Without lambda
+
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        Arrays.sort(logs, new LogComparator());
+        return logs;
+    }
+}
+
+// We an do the same with lambda and no need of this class
+class LogComparator implements Comparator<String> {
+    
+    @Override
+    public int compare(String log1, String log2) {
+        
+        // Split both logs into 2 parts to differentiate alphanumeric with alphabets only
+        // or digits only part
+        String[] log1Parts = log1.split(" ", 2);
+        String[] log2Parts = log2.split(" ", 2);
+        
+        // Check if 2nd part is digit or alphabet
+        boolean log1HasDigits = Character.isDigit(log1Parts[1].charAt(0));
+        boolean log2HasDigits = Character.isDigit(log2Parts[1].charAt(0));
+        
+        // if 2nd halves are not digits then compare alphabets part and 
+        // if 2nd part alphabets are same then compare with first alphanumeric part
+        if(!log1HasDigits && !log2HasDigits) {
+            int compResult = log1Parts[1].compareTo(log2Parts[1]);
+            // Now check if 2nd halves are equal and if they are then compare 1st halves
+            if(compResult == 0){
+                return log1Parts[0].compareTo(log2Parts[0]);
+            }
+            return compResult;
+        }
+        
+        // Now either both have digits or one of them have digits
+        // If both have digits, dont change order.
+        // If one of them have digits then keep digit one after alphabetic one.
+        return log1HasDigits ? (log2HasDigits ? 0 : 1) : -1;
+        
+    }
+}
+*/
